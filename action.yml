@@ -27,5 +27,5 @@ runs:
       shell: bash
 
     - run: |
-        notify -data ${{ inputs.data }} -provider-config ${{ inputs.config }} ${{ inputs.flags }}
+        notify -data ${{ inputs.data }} -bulk -provider-config ${{ inputs.config }} ${{ inputs.flags }}
       shell: bash
