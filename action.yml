@@ -22,7 +22,7 @@ runs:
   steps:
     - run: |
         [ ! -x /home/runner/go/bin/notify ] && GO111MODULE=on go get -v github.com/projectdiscovery/notify/cmd/notify@v0.0.2
-        [ ! -z ${{ inputs.data }} ] && echo "data=< ${{ inputs.data}}" >> $GITHUB_ENV
+        [ ! -z ${{ inputs.data }} ] && echo "data=${{ inputs.data}}" >> $GITHUB_ENV
         mkdir -p /home/runner/.config/notify/ && cp ${{ inputs.config }} /home/runner/.config/notify/notify.conf
         [ ! -z "${{ inputs.flags }}" ] && echo "flags=${{ inputs.flags }}" >> $GITHUB_ENV
         echo "/home/runner/go/bin/" >> $GITHUB_PATH
@@ -30,6 +30,6 @@ runs:
 
     - run: |
         notify \
-          ${{ env.flags }} \
-          ${{ env.data }}
+          -data ${{ env.data }}
+          ${{ env.flags }}
       shell: bash
