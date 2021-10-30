@@ -7,7 +7,7 @@ branding:
 inputs:
   data:
     description: "Input file to send with notify"
-    required: false
+    required: true
 
   config:
     description: "Config file to use with notify"
@@ -16,20 +16,19 @@ inputs:
   flags:
     description: "Additional notify CLI flags to use"
     required: false
+    default: ""
 
 runs:
   using: "composite"
   steps:
     - run: |
         [ ! -x /home/runner/go/bin/notify ] && GO111MODULE=on go get -v github.com/projectdiscovery/notify/cmd/notify
-        [ ! -z ${{ inputs.data }} ] && echo "data=${{ inputs.data}}" >> $GITHUB_ENV
-        mkdir -p /home/runner/.config/notify/ && cp ${{ inputs.config }} /home/runner/.config/notify/notify.conf
-        [ ! -z "${{ inputs.flags }}" ] && echo "flags=${{ inputs.flags }}" >> $GITHUB_ENV
         echo "/home/runner/go/bin/" >> $GITHUB_PATH
       shell: bash
 
     - run: |
         notify \
-          -data ${{ env.data }}
-          ${{ env.flags }}
+          -data ${{ inputs.data }}
+          -config ${{ inputs.config }}
+          ${{ inputs.flags }}
       shell: bash
